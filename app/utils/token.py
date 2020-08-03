@@ -1,6 +1,8 @@
-from flask import request, jsonify
 from functools import wraps
+
 import jwt
+from flask import request, jsonify
+
 from app.config import config
 from app.models.user import UserModel
 

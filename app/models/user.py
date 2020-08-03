@@ -1,8 +1,6 @@
 from app.db import db
-from dataclasses import dataclass
 
 
-@dataclass
 class UserModel(db.Model):
     __tablename__ = 'user'
 

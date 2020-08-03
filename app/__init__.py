@@ -1,9 +1,10 @@
 from flask import Flask
 from flask_cors import CORS
-from .db import db, init_db
-from .resources.user import user_blueprint
-from .resources.auth import auth_blueprint
+
 from .config import config
+from .db import db, init_db
+from .resources.auth import auth_blueprint
+from .resources.user import user_blueprint
 
 
 def create_app():
