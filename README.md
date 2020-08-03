@@ -29,8 +29,8 @@ $ docker-compose up
 5. Run the development server:
 
 ```
-$ export CONFIGURATION_SETUP="config.DevelopmentConfig"
-$ python3 app.py
+$ export ENV=dev
+$ python3 run.py
 ```
 
 6. Navigate to [http://localhost:5000](http://localhost:5000)

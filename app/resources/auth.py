@@ -3,7 +3,7 @@ from werkzeug.security import check_password_hash
 import jwt
 from datetime import datetime, timedelta
 from app.models.user import UserModel
-from config import Config
+from app.config import config
 
 auth_blueprint = Blueprint('auth_blueprint', __name__)
 
@@ -22,7 +22,7 @@ def authenticate_user():
     if check_password_hash(user.password, user_data['password']):
         payload = {'id': user.id, 'name': user.name, 'email': user.email,
                    'iat': datetime.utcnow(), 'exp': datetime.utcnow() + timedelta(days=1)}
-        encoded_jwt = jwt.encode(payload, Config.SECRET_KEY)
+        encoded_jwt = jwt.encode(payload, config.SECRET_KEY)
         return jsonify(access_token=encoded_jwt.decode('UTF-8')), 200
     else:
         return jsonify(message="Invalid email or password"), 400

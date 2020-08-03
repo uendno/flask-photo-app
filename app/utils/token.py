@@ -1,7 +1,7 @@
 from flask import request, jsonify
 from functools import wraps
 import jwt
-from config import Config
+from app.config import config
 from app.models.user import UserModel
 
 
@@ -14,7 +14,7 @@ def token_required(f):
             return jsonify(message='Missing access token'), 401
 
         try:
-            data = jwt.decode(access_token, Config.SECRET_KEY)
+            data = jwt.decode(access_token, config.SECRET_KEY)
             current_user = UserModel.query.get(data['id'])
             if not current_user:
                 return jsonify(message='User not found'), 404
