@@ -1,11 +1,8 @@
-from datetime import datetime, timedelta
-
-import jwt
 from flask import Blueprint, jsonify, request
 from werkzeug.security import check_password_hash
 
-from app.config import config
 from app.models.user import UserModel
+from app.utils.token import encode_token
 
 auth_blueprint = Blueprint('auth_blueprint', __name__)
 
@@ -22,9 +19,8 @@ def authenticate_user():
         return jsonify(message="Invalid email or password"), 400
 
     if check_password_hash(user.password, user_data['password']):
-        payload = {'id': user.id, 'name': user.name, 'email': user.email,
-                   'iat': datetime.utcnow(), 'exp': datetime.utcnow() + timedelta(days=1)}
-        encoded_jwt = jwt.encode(payload, config.SECRET_KEY)
+        payload = {'id': user.id, 'name': user.name, 'email': user.email}
+        encoded_jwt = encode_token(payload)
         return jsonify(access_token=encoded_jwt.decode('UTF-8')), 200
     else:
         return jsonify(message="Invalid email or password"), 400

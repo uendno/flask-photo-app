@@ -1,3 +1,4 @@
+from datetime import datetime, timedelta
 from functools import wraps
 
 import jwt
@@ -16,7 +17,7 @@ def token_required(f):
             return jsonify(message='Missing access token'), 401
 
         try:
-            data = jwt.decode(access_token, config.SECRET_KEY)
+            data = decode_token(access_token)
             current_user = UserModel.query.get(data['id'])
             if not current_user:
                 return jsonify(message='User not found'), 404
@@ -26,3 +27,12 @@ def token_required(f):
         return f(current_user, *args, **kwargs)
 
     return decorator
+
+
+def encode_token(payload):
+    payload = {**payload, 'iat': datetime.utcnow(), 'exp': datetime.utcnow() + timedelta(days=1)}
+    return jwt.encode(payload, config.SECRET_KEY)
+
+
+def decode_token(access_token):
+    return jwt.decode(access_token, config.SECRET_KEY)
