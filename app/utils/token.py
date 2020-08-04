@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 from functools import wraps
 
 import jwt
-from flask import request, jsonify
+from flask import request, jsonify, g
 
 from app.config import config
 from app.models.user import UserModel
@@ -21,10 +21,11 @@ def token_required(f):
             current_user = UserModel.query.get(data['id'])
             if not current_user:
                 return jsonify(message='User not found'), 404
+            g.user = current_user
         except jwt.PyJWTError:
             return jsonify(message='Invalid access token'), 401
 
-        return f(current_user, *args, **kwargs)
+        return f(*args, **kwargs)
 
     return decorator
 

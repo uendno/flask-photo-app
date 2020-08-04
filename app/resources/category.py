@@ -1,43 +1,30 @@
-from flask import Blueprint, jsonify, request
-from marshmallow import ValidationError
+from flask import Blueprint, jsonify, g
 
 from app.db import db
 from app.models.category import CategoryModel
 from app.schemas.category import CategorySchema
+from app.schemas.parameter import ParameterSchema
 from app.utils.token import token_required
+from app.utils.validation import validate_schema
 
 category_blueprint = Blueprint('category_blueprint', __name__)
 
 
 @category_blueprint.route('', methods=['POST'])
 @token_required
-def create_category(current_user):
-    try:
-        from flask import request
-        data = CategorySchema().load(request.get_json())
-    except ValidationError as err:
-        return jsonify(message=err.messages), 400
-
-    new_category = CategoryModel(**data)
+@validate_schema(CategorySchema)
+def create_category():
+    new_category = CategoryModel(**g.data)
     db.session.add(new_category)
     db.session.commit()
     return jsonify(CategorySchema().dump(new_category)), 201
 
 
 @category_blueprint.route('', methods=['GET'])
+@validate_schema(ParameterSchema)
 def get_categories():
-    offset = 0
-    limit = None
-    try:
-        offset = int(request.args.get('offset')) if 'offset' in request.args else 0
-        limit = int(request.args.get('limit')) if 'limit' in request.args else None
-        if offset < 0 or (limit and limit < 0):
-            raise ValueError()
-    except ValueError as err:
-        return jsonify(message='Invalid offset or limit'), 400
-
     total_categories = CategoryModel.query.count()
-    categories = CategoryModel.query.offset(offset).limit(limit).all()
+    categories = CategoryModel.query.offset(g.data['offset']).limit(g.data['limit']).all()
     return jsonify(total_categories=total_categories, categories=CategorySchema(many=True).dump(categories))
 
 
