@@ -16,7 +16,7 @@ def create_user():
     except ValidationError as err:
         return jsonify(message=err.messages), 400
 
-    new_user = UserModel(data['name'], data['email'], data['password'])
+    new_user = UserModel(**data)
     db.session.add(new_user)
     db.session.commit()
     return jsonify({}), 201

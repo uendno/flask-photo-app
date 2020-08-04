@@ -18,7 +18,7 @@ def create_category(current_user):
     except ValidationError as err:
         return jsonify(message=err.messages), 400
 
-    new_category = CategoryModel(name=data['name'], description=data['description'], image_url=data['image_url'])
+    new_category = CategoryModel(**data)
     db.session.add(new_category)
     db.session.commit()
     return jsonify(CategorySchema().dump(new_category)), 201
