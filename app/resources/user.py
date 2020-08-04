@@ -25,4 +25,4 @@ def create_user():
 @user_blueprint.route('/me', methods=['GET'])
 @token_required
 def get_current_user(current_user):
-    return UserSchema(only=('id', 'name')).dumps(current_user)
+    return jsonify(UserSchema(only=('id', 'name')).dump(current_user))

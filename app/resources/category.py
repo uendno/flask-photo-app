@@ -21,7 +21,7 @@ def create_category(current_user):
     new_category = CategoryModel(name=data['name'], description=data['description'], image_url=data['image_url'])
     db.session.add(new_category)
     db.session.commit()
-    return CategorySchema().dumps(new_category), 201
+    return jsonify(CategorySchema().dump(new_category)), 201
 
 
 @category_blueprint.route('', methods=['GET'])
@@ -41,9 +41,9 @@ def get_categories():
     return jsonify(total_categories=total_categories, categories=CategorySchema(many=True).dump(categories))
 
 
-@category_blueprint.route('/<id>', methods=['GET'])
-def get_category_by_id(id):
-    category = CategoryModel.query.get(id)
+@category_blueprint.route('/<category_id>', methods=['GET'])
+def get_category_by_id(category_id):
+    category = CategoryModel.query.get(category_id)
     if not category:
         return jsonify(message='Category not found'), 404
-    return CategorySchema().dumps(category)
+    return jsonify(CategorySchema().dump(category))
