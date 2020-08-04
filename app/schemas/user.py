@@ -13,3 +13,6 @@ class UserSchema(Schema):
     def validate_email(self, value):
         if UserModel.query.filter_by(email=value).one_or_none():
             raise ValidationError('Email already exists.')
+
+    class Meta:
+        exclude = ("email", "password")
