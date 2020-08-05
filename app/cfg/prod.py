@@ -1,5 +1,7 @@
+import os
+
 from .base import BaseConfig
 
 
 class Config(BaseConfig):
-    pass
+    SQLALCHEMY_DATABASE_URI = os.getenv('DB_ENDPOINT')
