@@ -11,7 +11,7 @@ auth_blueprint = Blueprint('auth_blueprint', __name__)
 
 
 @auth_blueprint.route('', methods=['POST'])
-@validate_schema(AuthSchema, 'Invalid email or password')
+@validate_schema(AuthSchema)
 def authenticate_user():
     user = UserModel.query.filter_by(email=g.data['email']).one_or_none()
 
@@ -20,4 +20,4 @@ def authenticate_user():
         encoded_jwt = encode_token(payload)
         return jsonify(access_token=encoded_jwt.decode('UTF-8')), 200
     else:
-        return jsonify(message='Invalid email or password'), 400
+        return jsonify(message='Bad Request', error='Invalid email or password.'), 400
