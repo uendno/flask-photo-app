@@ -19,7 +19,7 @@ def create_user(data):
         db.session.commit()
         return jsonify({}), 201
     except IntegrityError:
-        return jsonify(message='Bad Request', error="Email already exists."), 400
+        return jsonify(message='Bad Request', error='Email already exists.'), 400
 
 
 @user_blueprint.route('/me', methods=['GET'])

@@ -21,7 +21,7 @@ def create_category(data, user):
         db.session.commit()
         return jsonify(CategorySchema().dump(new_category)), 201
     except IntegrityError:
-        return jsonify(message='Bad Request', error="Category name already exists."), 400
+        return jsonify(message='Bad Request', error='Category name already exists.'), 400
 
 
 @category_blueprint.route('', methods=['GET'])

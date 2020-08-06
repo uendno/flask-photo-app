@@ -22,7 +22,7 @@ def create_item(data, user, category_id):
         db.session.commit()
         return jsonify(ItemSchema().dump(new_item)), 201
     except IntegrityError:
-        return jsonify(message="Category not found"), 404
+        return jsonify(message='Category not found'), 404
 
 
 @item_blueprint.route('/<category_id>/items', methods=['GET'])
@@ -30,7 +30,7 @@ def create_item(data, user, category_id):
 def get_items_by_category_id(data, category_id):
     category = CategoryModel.query.get(category_id)
     if not category:
-        return jsonify(message="Category not found"), 404
+        return jsonify(message='Category not found'), 404
     total_items = len(category.items)
 
     items = ItemModel.query \
@@ -45,7 +45,7 @@ def get_items_by_category_id(data, category_id):
 def get_item_by_id(category_id, item_id):
     item = ItemModel.query.filter_by(id=item_id, category_id=category_id).one_or_none()
     if not item:
-        return jsonify(message="Item not found"), 404
+        return jsonify(message='Item not found'), 404
     return jsonify(ItemSchema().dump(item))
 
 
@@ -55,10 +55,10 @@ def get_item_by_id(category_id, item_id):
 def update_item_by_id(data, user, category_id, item_id):
     item = ItemModel.query.filter_by(id=item_id, category_id=category_id).one_or_none()
     if not item:
-        return jsonify(message="Item not found"), 404
+        return jsonify(message='Item not found'), 404
 
     if item.user_id != user.id:
-        return jsonify(message="The user is not authorized to perform this action"), 403
+        return jsonify(message='The user is not authorized to perform this action'), 403
 
     item.description = data['description']
     item.image_url = data['image_url']
@@ -71,10 +71,10 @@ def update_item_by_id(data, user, category_id, item_id):
 def delete_item_by_id(user, category_id, item_id):
     item = ItemModel.query.filter_by(id=item_id, category_id=category_id).one_or_none()
     if not item:
-        return jsonify(message="Item not found"), 404
+        return jsonify(message='Item not found'), 404
 
     if item.user_id != user.id:
-        return jsonify(message="The user is not authorized to perform this action"), 403
+        return jsonify(message='The user is not authorized to perform this action'), 403
 
     db.session.delete(item)
     db.session.commit()
