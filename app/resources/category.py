@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, g
+from flask import Blueprint, jsonify
 from sqlalchemy.exc import IntegrityError
 
 from app.db import db
@@ -14,9 +14,9 @@ category_blueprint = Blueprint('category_blueprint', __name__)
 @category_blueprint.route('', methods=['POST'])
 @token_required
 @validate_schema(CategorySchema)
-def create_category():
+def create_category(data, user):
     try:
-        new_category = CategoryModel(**g.data)
+        new_category = CategoryModel(**data)
         db.session.add(new_category)
         db.session.commit()
         return jsonify(CategorySchema().dump(new_category)), 201
@@ -26,9 +26,9 @@ def create_category():
 
 @category_blueprint.route('', methods=['GET'])
 @validate_schema(ParameterSchema)
-def get_categories():
+def get_categories(data):
     total_categories = CategoryModel.query.count()
-    categories = CategoryModel.query.offset(g.data['offset']).limit(g.data['limit']).all()
+    categories = CategoryModel.query.offset(data['offset']).limit(data['limit']).all()
     return jsonify(total_categories=total_categories, categories=CategorySchema(many=True).dump(categories))
 
 

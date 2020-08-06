@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, g
+from flask import Blueprint, jsonify
 from sqlalchemy.exc import IntegrityError
 
 from app.db import db
@@ -12,9 +12,9 @@ user_blueprint = Blueprint('user_blueprint', __name__)
 
 @user_blueprint.route('', methods=['POST'])
 @validate_schema(UserSchema)
-def create_user():
+def create_user(data):
     try:
-        new_user = UserModel(**g.data)
+        new_user = UserModel(**data)
         db.session.add(new_user)
         db.session.commit()
         return jsonify({}), 201
@@ -24,5 +24,5 @@ def create_user():
 
 @user_blueprint.route('/me', methods=['GET'])
 @token_required
-def get_current_user():
-    return jsonify(UserSchema().dump(g.user))
+def get_current_user(user):
+    return jsonify(UserSchema().dump(user))

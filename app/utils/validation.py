@@ -1,6 +1,6 @@
 from functools import wraps
 
-from flask import request, jsonify, g
+from flask import request, jsonify
 from marshmallow import ValidationError
 
 
@@ -9,10 +9,11 @@ def validate_schema(schema):
         @wraps(f)
         def wrapper(*args, **kwargs):
             try:
-                g.data = schema().load(request.args.to_dict() if request.method == 'GET' else request.get_json())
+                request_data = request.args.to_dict() if request.method == 'GET' else request.get_json()
+                data = schema().load(request_data)
             except ValidationError as err:
                 return jsonify(message='Bad Request', error=err.messages), 400
-            return f(*args, **kwargs)
+            return f(data, *args, **kwargs)
 
         return wrapper
 
