@@ -21,7 +21,7 @@ def create_item(category_id):
         db.session.add(new_item)
         db.session.commit()
         return jsonify(ItemSchema().dump(new_item)), 201
-    except IntegrityError as err:
+    except IntegrityError:
         return jsonify(message="Category not found"), 404
 
 

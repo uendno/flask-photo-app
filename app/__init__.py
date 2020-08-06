@@ -1,5 +1,6 @@
-from flask import Flask
+from flask import Flask, jsonify
 from flask_cors import CORS
+from werkzeug.exceptions import HTTPException
 
 from .config import config
 from .db import db, init_db
@@ -19,6 +20,11 @@ def create_app():
     app.register_blueprint(auth_blueprint, url_prefix='/auth')
     app.register_blueprint(category_blueprint, url_prefix='/categories')
     app.register_blueprint(item_blueprint, url_prefix='/categories')
+
+    @app.errorhandler(HTTPException)
+    def handle_bad_request(e):
+        error = str(e)
+        return jsonify(message=error), int(error[:3])
 
     db.init_app(app)
     with app.app_context():

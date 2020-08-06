@@ -17,7 +17,7 @@ def authenticate_user():
 
     if user and check_password_hash(user.password, g.data['password']):
         payload = UserSchema().dump(user)
-        encoded_jwt = encode_token(payload)
-        return jsonify(access_token=encoded_jwt.decode('UTF-8')), 200
+        encoded_jwt = encode_token(payload).decode('UTF-8')
+        return jsonify(access_token=encoded_jwt), 200
     else:
         return jsonify(message='Bad Request', error='Invalid email or password.'), 400

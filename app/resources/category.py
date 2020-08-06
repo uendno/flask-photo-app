@@ -1,4 +1,5 @@
 from flask import Blueprint, jsonify, g
+from sqlalchemy.exc import IntegrityError
 
 from app.db import db
 from app.models.category import CategoryModel
@@ -14,10 +15,13 @@ category_blueprint = Blueprint('category_blueprint', __name__)
 @token_required
 @validate_schema(CategorySchema)
 def create_category():
-    new_category = CategoryModel(**g.data)
-    db.session.add(new_category)
-    db.session.commit()
-    return jsonify(CategorySchema().dump(new_category)), 201
+    try:
+        new_category = CategoryModel(**g.data)
+        db.session.add(new_category)
+        db.session.commit()
+        return jsonify(CategorySchema().dump(new_category)), 201
+    except IntegrityError:
+        return jsonify(message='Bad Request', error="Category name already exists."), 400
 
 
 @category_blueprint.route('', methods=['GET'])

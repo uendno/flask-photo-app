@@ -20,7 +20,7 @@ def token_required(f):
             data = decode_token(access_token)
             current_user = UserModel.query.get(data['id'])
             if not current_user:
-                return jsonify(message='User not found'), 404
+                raise jwt.PyJWTError()
             g.user = current_user
         except jwt.PyJWTError:
             return jsonify(message='Invalid access token'), 401
