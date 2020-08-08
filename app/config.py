@@ -9,4 +9,4 @@ if env in list_env:
     module = import_module(config_name)
     config = module.Config
 else:
-    raise RuntimeError("Value for environment variable ENV is not valid")
+    raise RuntimeError('Value for environment variable ENV is not valid')

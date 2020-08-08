@@ -37,4 +37,4 @@ def encode_token(payload):
 
 
 def decode_token(access_token):
-    return jwt.decode(access_token, config.SECRET_KEY)
+    return jwt.decode(access_token, config.SECRET_KEY, algorithms=['HS256'])

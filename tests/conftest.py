@@ -2,7 +2,7 @@ import pytest
 
 from app import create_app
 from app.db import db, clear_db
-from .utils.db import insert_test_data
+from .helpers import insert_test_data
 
 
 @pytest.fixture
