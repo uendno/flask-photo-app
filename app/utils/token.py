@@ -1,8 +1,8 @@
 from datetime import datetime, timedelta
 from functools import wraps
 
+import flask
 import jwt
-from flask import request, jsonify
 
 from app.config import config
 from app.models.user import UserModel
@@ -11,10 +11,11 @@ from app.models.user import UserModel
 def token_required(f):
     @wraps(f)
     def decorator(*args, **kwargs):
-        if 'Authorization' in request.headers and request.headers['Authorization']:
-            access_token = request.headers['Authorization'].split()[1]
+        auth_header = flask.request.headers.get('Authorization', None)
+        if auth_header:
+            access_token = auth_header.split()[1]
         else:
-            return jsonify(message='Missing access token'), 401
+            return flask.jsonify(message='Missing access token'), 401
 
         try:
             data = decode_token(access_token)
@@ -23,7 +24,7 @@ def token_required(f):
                 raise jwt.PyJWTError()
             user = current_user
         except jwt.PyJWTError:
-            return jsonify(message='Invalid access token'), 401
+            return flask.jsonify(message='Invalid access token'), 401
 
         return f(user, *args, **kwargs)
 
