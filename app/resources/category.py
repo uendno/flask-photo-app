@@ -29,7 +29,7 @@ def create_category(data, user):
 def get_categories(data):
     total_categories = CategoryModel.query.count()
     categories = CategoryModel.query.offset(data['offset']).limit(data['limit']).all()
-    return jsonify(total_categories=total_categories, categories=CategorySchema(many=True).dump(categories))
+    return jsonify(total_categories=total_categories, categories=CategorySchema(many=True).dump(categories)), 200
 
 
 @category_blueprint.route('/<category_id>', methods=['GET'])
@@ -37,4 +37,4 @@ def get_category_by_id(category_id):
     category = CategoryModel.query.get(category_id)
     if not category:
         return jsonify(message='Category not found'), 404
-    return jsonify(CategorySchema().dump(category))
+    return jsonify(CategorySchema().dump(category)), 200
