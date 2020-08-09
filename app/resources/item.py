@@ -38,7 +38,7 @@ def get_items_by_category_id(data, category_id):
         .offset(data['offset']) \
         .limit(data['limit']) \
         .all()
-    return jsonify(total_items=total_items, items=ItemSchema(many=True).dump(items))
+    return jsonify(total_items=total_items, items=ItemSchema(many=True).dump(items)), 200
 
 
 @item_blueprint.route('/<category_id>/items/<item_id>', methods=['GET'])
@@ -46,7 +46,7 @@ def get_item_by_id(category_id, item_id):
     item = ItemModel.query.filter_by(id=item_id, category_id=category_id).one_or_none()
     if not item:
         return jsonify(message='Item not found'), 404
-    return jsonify(ItemSchema().dump(item))
+    return jsonify(ItemSchema().dump(item)), 200
 
 
 @item_blueprint.route('/<category_id>/items/<item_id>', methods=['PUT'])
