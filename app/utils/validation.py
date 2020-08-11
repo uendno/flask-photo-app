@@ -6,7 +6,7 @@ from marshmallow import ValidationError
 from app.constants import CATEGORY_NOT_FOUND, ITEM_NOT_FOUND, UNAUTHORIZED
 from app.models.category import CategoryModel
 from app.models.item import ItemModel
-from app.utils.exception_handler import BadRequestException, NotFoundException, AuthorizationException
+from app.utils.custom_exception import BadRequestException, NotFoundException, AuthorizationException
 
 
 def validate_schema(schema):

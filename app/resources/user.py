@@ -5,7 +5,7 @@ from app.constants import EMAIL_EXIST
 from app.db import db
 from app.models.user import UserModel
 from app.schemas.user import UserRequestSchema, UserResponseSchema
-from app.utils.exception_handler import BadRequestException
+from app.utils.custom_exception import BadRequestException
 from app.utils.token import token_required
 from app.utils.validation import validate_schema
 

@@ -6,7 +6,7 @@ from app.db import db
 from app.models.category import CategoryModel
 from app.schemas.category import CategoryRequestSchema, CategoryResponseSchema
 from app.schemas.pagination import PaginationSchema
-from app.utils.exception_handler import BadRequestException
+from app.utils.custom_exception import BadRequestException
 from app.utils.token import token_required
 from app.utils.validation import validate_schema, validate_category
 

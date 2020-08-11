@@ -4,7 +4,7 @@ from werkzeug.security import check_password_hash
 from app.constants import INVALID_CREDENTIALS
 from app.models.user import UserModel
 from app.schemas.auth import AuthRequestSchema
-from app.utils.exception_handler import BadRequestException
+from app.utils.custom_exception import BadRequestException
 from app.utils.token import encode_token
 from app.utils.validation import validate_schema
 
