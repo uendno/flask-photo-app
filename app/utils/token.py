@@ -5,6 +5,7 @@ import flask
 import jwt
 
 from app.config import config
+from app.constants import MISSING_TOKEN, INVALID_TOKEN
 from app.models.user import UserModel
 from app.utils.exception_handler import AuthenticationException
 
@@ -14,11 +15,11 @@ def token_required(f):
     def decorator(*args, **kwargs):
         auth_header = flask.request.headers.get('Authorization')
         if not auth_header:
-            raise AuthenticationException('Missing access token')
+            raise AuthenticationException(MISSING_TOKEN)
 
         auth_header_split = auth_header.split()
         if len(auth_header_split) != 2 or auth_header_split[0] != 'Bearer':
-            raise AuthenticationException('Invalid access token')
+            raise AuthenticationException(INVALID_TOKEN)
 
         access_token = auth_header_split[1]
 
@@ -29,7 +30,7 @@ def token_required(f):
                 raise jwt.PyJWTError()
             user = current_user
         except jwt.PyJWTError:
-            raise AuthenticationException('Invalid access token')
+            raise AuthenticationException(INVALID_TOKEN)
 
         return f(user=user, *args, **kwargs)
 

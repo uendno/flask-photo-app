@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify
 from sqlalchemy.exc import IntegrityError
 
+from app.constants import CATEGORY_NAME_EXIST
 from app.db import db
 from app.models.category import CategoryModel
 from app.schemas.category import CategoryRequestSchema, CategoryResponseSchema
@@ -22,7 +23,7 @@ def create_category(data, user):
         db.session.commit()
         return jsonify(CategoryResponseSchema().dump(new_category)), 201
     except IntegrityError:
-        raise BadRequestException(data='Category name already exists')
+        raise BadRequestException(data=CATEGORY_NAME_EXIST)
 
 
 @category_blueprint.route('', methods=['GET'])

@@ -1,31 +1,39 @@
 from unittest.mock import patch
 
 import flask
+import pytest
 
 from app import create_app
+from app.constants import MISSING_TOKEN, INVALID_TOKEN
+from app.utils.exception_handler import AuthenticationException
 from app.utils.token import token_required, encode_token
 
 
 def test_missing_access_token():
-    response = mock_header_and_test_token(None)
-    assert response == 401
+    with pytest.raises(AuthenticationException) as exc_info:
+        mock_header_and_test_token(None)
+    assert str(exc_info.value) == MISSING_TOKEN
 
 
 def test_invalid_token():
-    response = mock_header_and_test_token(f'Bearer iikshf92.oifhsfds.98dfdsfh')
-    assert response == 401
+    with pytest.raises(AuthenticationException) as exc_info:
+        mock_header_and_test_token(f'Bearer iikshf92.oifhsfds.98dfdsfh')
+    assert str(exc_info.value) == INVALID_TOKEN
 
-    response = mock_header_and_test_token(f'iikshf92.oifhsfds.98dfdsfh')
-    assert response == 401
+    with pytest.raises(AuthenticationException) as exc_info:
+        mock_header_and_test_token(f'iikshf92.oifhsfds.98dfdsfh')
+    assert str(exc_info.value) == INVALID_TOKEN
 
-    response = mock_header_and_test_token(f'Bearer iikshf92.oifhsfds 98dfdsfh')
-    assert response == 401
+    with pytest.raises(AuthenticationException) as exc_info:
+        mock_header_and_test_token(f'Bearer iikshf92.oifhsfds 98dfdsfh')
+    assert str(exc_info.value) == INVALID_TOKEN
 
 
 def test_invalid_user():
     access_token = encode_token({"id": 3})
-    response = mock_header_and_test_token(f'Bearer {access_token}')
-    assert response == 401
+    with pytest.raises(AuthenticationException) as exc_info:
+        mock_header_and_test_token(f'Bearer {access_token}')
+    assert str(exc_info.value) == INVALID_TOKEN
 
 
 def mock_header_and_test_token(access_token):

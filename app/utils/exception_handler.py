@@ -6,6 +6,9 @@ class BaseExceptionHandler(Exception):
             self.body['data'] = data
         self.status_code = status_code
 
+    def __str__(self):
+        return self.body['message']
+
 
 class BadRequestException(BaseExceptionHandler):
     def __init__(self, message='Bad Request', data=None):

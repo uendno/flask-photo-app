@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify
 from sqlalchemy.exc import IntegrityError
 
+from app.constants import EMAIL_EXIST
 from app.db import db
 from app.models.user import UserModel
 from app.schemas.user import UserRequestSchema, UserResponseSchema
@@ -20,7 +21,7 @@ def create_user(data):
         db.session.commit()
         return jsonify({}), 201
     except IntegrityError:
-        raise BadRequestException(data='Email already exists')
+        raise BadRequestException(data=EMAIL_EXIST)
 
 
 @user_blueprint.route('/me', methods=['GET'])
