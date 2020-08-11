@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify
 from sqlalchemy.exc import IntegrityError
 
-from app.constants import EMAIL_EXIST
+from app.constants.error_message import EMAIL_EXIST
 from app.db import db
 from app.models.user import UserModel
 from app.schemas.user import UserRequestSchema, UserResponseSchema

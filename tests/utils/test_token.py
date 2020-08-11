@@ -4,7 +4,7 @@ import flask
 import pytest
 
 from app import create_app
-from app.constants import MISSING_TOKEN, INVALID_TOKEN
+from app.constants.error_message import MISSING_TOKEN, INVALID_TOKEN
 from app.utils.custom_exception import AuthenticationException
 from app.utils.token import token_required, encode_token
 

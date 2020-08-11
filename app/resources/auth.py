@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify
 from werkzeug.security import check_password_hash
 
-from app.constants import INVALID_CREDENTIALS
+from app.constants.error_message import INVALID_CREDENTIALS
 from app.models.user import UserModel
 from app.schemas.auth import AuthRequestSchema
 from app.utils.custom_exception import BadRequestException

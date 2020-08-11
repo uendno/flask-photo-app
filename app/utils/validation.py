@@ -3,7 +3,7 @@ from functools import wraps
 from flask import request
 from marshmallow import ValidationError
 
-from app.constants import CATEGORY_NOT_FOUND, ITEM_NOT_FOUND, UNAUTHORIZED
+from app.constants.error_message import CATEGORY_NOT_FOUND, ITEM_NOT_FOUND, UNAUTHORIZED
 from app.models.category import CategoryModel
 from app.models.item import ItemModel
 from app.utils.custom_exception import BadRequestException, NotFoundException, AuthorizationException

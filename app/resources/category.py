@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify
 from sqlalchemy.exc import IntegrityError
 
-from app.constants import CATEGORY_NAME_EXIST
+from app.constants.error_message import CATEGORY_NAME_EXIST
 from app.db import db
 from app.models.category import CategoryModel
 from app.schemas.category import CategoryRequestSchema, CategoryResponseSchema

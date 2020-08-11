@@ -1,12 +1,14 @@
 import os
 from importlib import import_module
 
-valid_envs = ('dev', 'test', 'prod')
+from app.constants.error_message import INVALID_ENVIRONMENT_VARIABLE
+
+VALID_ENVS = ('dev', 'test', 'prod')
 
 env = os.getenv('ENV')
-if env in valid_envs:
-    config_name = 'app.cfg.' + env
-    module = import_module(config_name)
-    config = module.Config
-else:
-    raise RuntimeError('Value for environment variable ENV is not valid')
+if env not in VALID_ENVS:
+    raise RuntimeError(INVALID_ENVIRONMENT_VARIABLE)
+
+config_name = 'app.cfg.' + env
+module = import_module(config_name)
+config = module.Config

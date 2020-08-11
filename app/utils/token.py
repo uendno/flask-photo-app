@@ -5,7 +5,7 @@ import flask
 import jwt
 
 from app.config import config
-from app.constants import MISSING_TOKEN, INVALID_TOKEN
+from app.constants.error_message import MISSING_TOKEN, INVALID_TOKEN
 from app.models.user import UserModel
 from app.utils.custom_exception import AuthenticationException
 
