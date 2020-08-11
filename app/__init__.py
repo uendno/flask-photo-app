@@ -8,6 +8,7 @@ from .resources.auth import auth_blueprint
 from .resources.category import category_blueprint
 from .resources.item import item_blueprint
 from .resources.user import user_blueprint
+from .utils.exception_handler import BaseExceptionHandler
 
 
 def create_app():
@@ -22,9 +23,12 @@ def create_app():
     app.register_blueprint(item_blueprint)
 
     @app.errorhandler(HTTPException)
-    def handle_bad_request(e):
-        error = str(e)
-        return jsonify(message=error), int(error[:3])
+    def handle_http_exception(e):
+        return jsonify(message=e.description), e.code
+
+    @app.errorhandler(BaseExceptionHandler)
+    def handle_custom_exception(error):
+        return jsonify(error.body), error.status_code
 
     db.init_app(app)
     with app.app_context():
