@@ -1,10 +1,10 @@
 import os
 from importlib import import_module
 
-list_env = ('dev', 'test', 'prod')
+valid_envs = ('dev', 'test', 'prod')
 
 env = os.getenv('ENV')
-if env in list_env:
+if env in valid_envs:
     config_name = 'app.cfg.' + env
     module = import_module(config_name)
     config = module.Config
