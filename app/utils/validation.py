@@ -31,7 +31,7 @@ def validate_category(f):
         category = CategoryModel.query.get(category_id)
         if not category:
             raise NotFoundException(CATEGORY_NOT_FOUND)
-        return f(category=category, category_id=category_id, *args, **kwargs)
+        return f(category=category, *args, **kwargs)
 
     return wrapper
 
@@ -42,7 +42,7 @@ def validate_item(f):
         item = ItemModel.query.get(item_id)
         if not item:
             raise NotFoundException(ITEM_NOT_FOUND)
-        return f(item=item, item_id=item_id, *args, **kwargs)
+        return f(item=item, *args, **kwargs)
 
     return wrapper
 

@@ -37,5 +37,5 @@ def get_categories(data):
 
 @category_blueprint.route('/<category_id>', methods=['GET'])
 @validate_category
-def get_category_by_id(category, category_id):
+def get_category_by_id(category):
     return jsonify(CategoryResponseSchema().dump(category)), 200
