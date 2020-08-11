@@ -16,10 +16,10 @@ def create_app():
 
     app.config.from_object(config)
 
-    app.register_blueprint(user_blueprint, url_prefix='/users')
-    app.register_blueprint(auth_blueprint, url_prefix='/auth')
-    app.register_blueprint(category_blueprint, url_prefix='/categories')
-    app.register_blueprint(item_blueprint, url_prefix='/categories')
+    app.register_blueprint(user_blueprint)
+    app.register_blueprint(auth_blueprint)
+    app.register_blueprint(category_blueprint)
+    app.register_blueprint(item_blueprint)
 
     @app.errorhandler(HTTPException)
     def handle_bad_request(e):

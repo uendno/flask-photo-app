@@ -3,15 +3,15 @@ from sqlalchemy.exc import IntegrityError
 
 from app.db import db
 from app.models.user import UserModel
-from app.schemas.user import UserSchema
+from app.schemas.user import UserRequestSchema, UserResponseSchema
 from app.utils.token import token_required
 from app.utils.validation import validate_schema
 
-user_blueprint = Blueprint('user_blueprint', __name__)
+user_blueprint = Blueprint('user_blueprint', __name__, url_prefix='/users')
 
 
 @user_blueprint.route('', methods=['POST'])
-@validate_schema(UserSchema)
+@validate_schema(UserRequestSchema)
 def create_user(data):
     try:
         new_user = UserModel(**data)
@@ -25,4 +25,4 @@ def create_user(data):
 @user_blueprint.route('/me', methods=['GET'])
 @token_required
 def get_current_user(user):
-    return jsonify(UserSchema().dump(user)), 200
+    return jsonify(UserResponseSchema().dump(user)), 200

@@ -1,6 +1,6 @@
 from marshmallow import Schema, fields
 
 
-class AuthSchema(Schema):
+class AuthRequestSchema(Schema):
     email = fields.Email(required=True)
     password = fields.String(required=True)

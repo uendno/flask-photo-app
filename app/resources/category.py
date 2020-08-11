@@ -3,38 +3,37 @@ from sqlalchemy.exc import IntegrityError
 
 from app.db import db
 from app.models.category import CategoryModel
-from app.schemas.category import CategorySchema
-from app.schemas.parameter import ParameterSchema
+from app.schemas.category import CategoryRequestSchema, CategoryResponseSchema
+from app.schemas.pagination import PaginationSchema
 from app.utils.token import token_required
-from app.utils.validation import validate_schema
+from app.utils.validation import validate_schema, validate_category
 
-category_blueprint = Blueprint('category_blueprint', __name__)
+category_blueprint = Blueprint('category_blueprint', __name__, url_prefix='/categories')
 
 
 @category_blueprint.route('', methods=['POST'])
 @token_required
-@validate_schema(CategorySchema)
+@validate_schema(CategoryRequestSchema)
 def create_category(data, user):
     try:
         new_category = CategoryModel(**data)
         db.session.add(new_category)
         db.session.commit()
-        return jsonify(CategorySchema().dump(new_category)), 201
+        return jsonify(CategoryResponseSchema().dump(new_category)), 201
     except IntegrityError:
         return jsonify(message='Bad Request', error='Category name already exists.'), 400
 
 
 @category_blueprint.route('', methods=['GET'])
-@validate_schema(ParameterSchema)
+@validate_schema(PaginationSchema)
 def get_categories(data):
     total_categories = CategoryModel.query.count()
     categories = CategoryModel.query.offset(data['offset']).limit(data['limit']).all()
-    return jsonify(total_categories=total_categories, categories=CategorySchema(many=True).dump(categories)), 200
+    return jsonify(total_categories=total_categories,
+                   categories=CategoryResponseSchema(many=True).dump(categories)), 200
 
 
 @category_blueprint.route('/<category_id>', methods=['GET'])
-def get_category_by_id(category_id):
-    category = CategoryModel.query.get(category_id)
-    if not category:
-        return jsonify(message='Category not found'), 404
-    return jsonify(CategorySchema().dump(category)), 200
+@validate_category
+def get_category_by_id(category, category_id):
+    return jsonify(CategoryResponseSchema().dump(category)), 200
