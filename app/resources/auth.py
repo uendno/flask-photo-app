@@ -16,7 +16,7 @@ auth_blueprint = Blueprint('auth_blueprint', __name__, url_prefix='/auth')
 def authenticate_user(data):
     user = UserModel.query.filter_by(email=data['email']).one_or_none()
 
-    if not user or not check_password_hash(user.password, data['password']):
+    if not user or not check_password_hash(user.hashed_password, data['password']):
         raise BadRequestException(INVALID_CREDENTIALS)
 
     encoded_jwt = encode_token({'id': user.id})

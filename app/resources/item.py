@@ -1,6 +1,5 @@
 from flask import Blueprint, jsonify
 
-from app.db import db
 from app.models.item import ItemModel
 from app.schemas.item import ItemRequestSchema, ItemResponseSchema
 from app.schemas.pagination import PaginationSchema
@@ -16,8 +15,7 @@ item_blueprint = Blueprint('item_blueprint', __name__, url_prefix='/categories/<
 @validate_category
 def create_item(category, data, user):
     new_item = ItemModel(**data, category_id=category.id, user_id=user.id)
-    db.session.add(new_item)
-    db.session.commit()
+    new_item.save()
     return jsonify(ItemResponseSchema().dump(new_item)), 201
 
 
@@ -46,9 +44,7 @@ def get_item_by_id(item, category_id):
 @validate_item
 @validate_ownership
 def update_item_by_id(item, data, user, category_id):
-    item.description = data['description']
-    item.image_url = data['image_url']
-    db.session.commit()
+    item.update(**data)
     return jsonify(ItemResponseSchema().dump(item)), 200
 
 
@@ -57,6 +53,5 @@ def update_item_by_id(item, data, user, category_id):
 @validate_item
 @validate_ownership
 def delete_item_by_id(item, user, category_id):
-    db.session.delete(item)
-    db.session.commit()
+    item.delete()
     return jsonify({}), 200

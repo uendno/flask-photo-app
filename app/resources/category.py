@@ -2,7 +2,6 @@ from flask import Blueprint, jsonify
 from sqlalchemy.exc import IntegrityError
 
 from app.constants.error_message import CATEGORY_NAME_EXIST
-from app.db import db
 from app.models.category import CategoryModel
 from app.schemas.category import CategoryRequestSchema, CategoryResponseSchema
 from app.schemas.pagination import PaginationSchema
@@ -19,8 +18,7 @@ category_blueprint = Blueprint('category_blueprint', __name__, url_prefix='/cate
 def create_category(data, user):
     try:
         new_category = CategoryModel(**data)
-        db.session.add(new_category)
-        db.session.commit()
+        new_category.save()
         return jsonify(CategoryResponseSchema().dump(new_category)), 201
     except IntegrityError:
         raise BadRequestException(CATEGORY_NAME_EXIST)

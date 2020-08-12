@@ -3,21 +3,15 @@ from app.models.item import ItemModel
 from app.models.user import UserModel
 
 
-def insert_test_data(db):
+def insert_test_data():
     for data in user_data:
-        user = UserModel(**data)
-        db.session.add(user)
-        db.session.commit()
+        UserModel(**data).save()
 
     for data in category_data:
-        user = CategoryModel(**data)
-        db.session.add(user)
-        db.session.commit()
+        CategoryModel(**data).save()
 
     for data in item_data:
-        user = ItemModel(**data)
-        db.session.add(user)
-        db.session.commit()
+        ItemModel(**data).save()
 
 
 user_data = [
