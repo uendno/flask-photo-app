@@ -23,7 +23,7 @@ def create_category(data, user):
         db.session.commit()
         return jsonify(CategoryResponseSchema().dump(new_category)), 201
     except IntegrityError:
-        raise BadRequestException(data=CATEGORY_NAME_EXIST)
+        raise BadRequestException(CATEGORY_NAME_EXIST)
 
 
 @category_blueprint.route('', methods=['GET'])

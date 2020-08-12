@@ -21,7 +21,7 @@ def create_user(data):
         db.session.commit()
         return jsonify({}), 201
     except IntegrityError:
-        raise BadRequestException(data=EMAIL_EXIST)
+        raise BadRequestException(EMAIL_EXIST)
 
 
 @user_blueprint.route('/me', methods=['GET'])

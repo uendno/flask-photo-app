@@ -17,7 +17,7 @@ def authenticate_user(data):
     user = UserModel.query.filter_by(email=data['email']).one_or_none()
 
     if not user or not check_password_hash(user.password, data['password']):
-        raise BadRequestException(data=INVALID_CREDENTIALS)
+        raise BadRequestException(INVALID_CREDENTIALS)
 
     encoded_jwt = encode_token({'id': user.id})
     return jsonify(access_token=encoded_jwt), 200
