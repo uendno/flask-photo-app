@@ -6,10 +6,10 @@ from marshmallow import ValidationError
 from app.constants.error_message import CATEGORY_NOT_FOUND, ITEM_NOT_FOUND, UNAUTHORIZED
 from app.models.category import CategoryModel
 from app.models.item import ItemModel
-from app.utils.custom_exception import BadRequestException, NotFoundException, AuthorizationException
+from app.utils.app_exception import BadRequestException, NotFoundException, AuthorizationException
 
 
-def validate_schema(schema):
+def validate_and_load_schema(schema):
     def decorator(f):
         @wraps(f)
         def wrapper(*args, **kwargs):
@@ -25,7 +25,7 @@ def validate_schema(schema):
     return decorator
 
 
-def validate_category(f):
+def validate_and_load_category(f):
     @wraps(f)
     def wrapper(category_id, *args, **kwargs):
         category = CategoryModel.query.get(category_id)
@@ -36,7 +36,7 @@ def validate_category(f):
     return wrapper
 
 
-def validate_item(f):
+def validate_and_load_item(f):
     @wraps(f)
     def wrapper(item_id, *args, **kwargs):
         item = ItemModel.query.get(item_id)

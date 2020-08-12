@@ -1,4 +1,4 @@
-class BaseCustomException(Exception):
+class AppException(Exception):
     def __init__(self, message, data, status_code):
         self.body = {'message': message}
         if data is not None:
@@ -9,21 +9,21 @@ class BaseCustomException(Exception):
         return self.body['message']
 
 
-class BadRequestException(BaseCustomException):
+class BadRequestException(AppException):
     def __init__(self, message='Bad Request', data=None):
         super().__init__(message, data, 400)
 
 
-class AuthenticationException(BaseCustomException):
+class AuthenticationException(AppException):
     def __init__(self, message='Unauthenticated', data=None):
         super().__init__(message, data, 401)
 
 
-class AuthorizationException(BaseCustomException):
+class AuthorizationException(AppException):
     def __init__(self, message='Forbidden', data=None):
         super().__init__(message, data, 403)
 
 
-class NotFoundException(BaseCustomException):
+class NotFoundException(AppException):
     def __init__(self, message='Not Found', data=None):
         super().__init__(message, data, 404)

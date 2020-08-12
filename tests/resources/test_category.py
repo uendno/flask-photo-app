@@ -85,7 +85,7 @@ class TestGet:
         assert response.get_json()['name'] == 'Spring'
         assert response.get_json()['description'] == 'Warm'
         assert response.get_json()['image_url'] == 'https://vn.got-it.ai/'
-       
+
     def test_get_invalid_id(self, client):
         response = get(client, '/categories/5')
         assert response.status_code == 404
@@ -93,8 +93,8 @@ class TestGet:
     def test_get_list_valid_parameters(self, client):
         response = get(client, '/categories?offset=2&limit=2')
         assert response.status_code == 200
-        assert response.get_json()['total_categories'] == 4
-        assert len(response.get_json()['categories']) == 2
+        assert response.get_json()['total_items'] == 4
+        assert len(response.get_json()['items']) == 2
 
     def test_get_list_invalid_parameters(self, client):
         response = get(client, '/categories?offset=a')

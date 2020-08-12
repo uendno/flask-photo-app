@@ -8,7 +8,7 @@ from .resources.auth import auth_blueprint
 from .resources.category import category_blueprint
 from .resources.item import item_blueprint
 from .resources.user import user_blueprint
-from .utils.custom_exception import BaseCustomException
+from .utils.app_exception import AppException
 
 
 def create_app():
@@ -26,7 +26,7 @@ def create_app():
     def handle_http_exception(e):
         return jsonify(message=e.description), e.code
 
-    @app.errorhandler(BaseCustomException)
+    @app.errorhandler(AppException)
     def handle_custom_exception(error):
         return jsonify(error.body), error.status_code
 
