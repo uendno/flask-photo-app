@@ -9,13 +9,13 @@ from app.utils.app_exception import AuthenticationException
 from app.utils.token import token_required, encode_token
 
 
-def test_missing_access_token():
+def test_request_with_missing_access_token():
     with pytest.raises(AuthenticationException) as exc_info:
         mock_header_and_test_token(None)
     assert str(exc_info.value) == MISSING_TOKEN
 
 
-def test_invalid_token():
+def test_request_with_invalid_token():
     with pytest.raises(AuthenticationException) as exc_info:
         mock_header_and_test_token(f'Bearer iikshf92.oifhsfds.98dfdsfh')
     assert str(exc_info.value) == INVALID_TOKEN
@@ -29,7 +29,7 @@ def test_invalid_token():
     assert str(exc_info.value) == INVALID_TOKEN
 
 
-def test_invalid_user():
+def test_token_with_invalid_user():
     access_token = encode_token({"id": 3})
     with pytest.raises(AuthenticationException) as exc_info:
         mock_header_and_test_token(f'Bearer {access_token}')

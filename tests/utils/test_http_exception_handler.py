@@ -1,7 +1,7 @@
 from tests.helpers.token import get_access_token
 
 
-def test_invalid_request_body(client):
+def test_request_with_invalid_body(client):
     access_token = get_access_token(client)
     headers = {
         'Content-Type': 'application/json',
@@ -11,11 +11,11 @@ def test_invalid_request_body(client):
     assert response.status_code == 400
 
 
-def test_invalid_route(client):
+def test_request_with_invalid_route(client):
     response = client.get('/')
     assert response.status_code == 404
 
 
-def test_invalid_method(client):
+def test_request_with_invalid_method(client):
     response = client.delete('/users')
     assert response.status_code == 405

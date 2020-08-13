@@ -2,8 +2,8 @@ from tests.helpers.request import post, get, put, delete
 from tests.helpers.token import get_access_token
 
 
-class TestPost:
-    def test_post_valid_body(self, client):
+class TestCreateItem:
+    def test_create_item_with_valid_body(self, client):
         access_token = get_access_token(client)
         body = {
             'description': 'Countryside',
@@ -14,7 +14,7 @@ class TestPost:
         assert response.get_json()['description'] == body['description']
         assert response.get_json()['image_url'] == body['image_url']
 
-    def test_post_invalid_type(self, client):
+    def test_create_item_with_invalid_type(self, client):
         access_token = get_access_token(client)
         body = {
             'description': 1234567,
@@ -23,13 +23,13 @@ class TestPost:
         response = post(client, '/categories/1/items', body, access_token)
         assert response.status_code == 400
 
-    def test_post_missing_field(self, client):
+    def test_create_item_with_missing_field(self, client):
         access_token = get_access_token(client)
         body = {'description': 'Countryside'}
         response = post(client, '/categories/1/items', body, access_token)
         assert response.status_code == 400
 
-    def test_post_unknown_field(self, client):
+    def test_create_item_with_unknown_field(self, client):
         access_token = get_access_token(client)
         body = {
             'description': 'Countryside',
@@ -39,7 +39,7 @@ class TestPost:
         response = post(client, '/categories/1/items', body, access_token)
         assert response.status_code == 400
 
-    def test_post_empty_field(self, client):
+    def test_create_item_with_empty_field(self, client):
         access_token = get_access_token(client)
         body = {
             'description': '',
@@ -48,7 +48,7 @@ class TestPost:
         response = post(client, '/categories/1/items', body, access_token)
         assert response.status_code == 400
 
-    def test_post_invalid_length(self, client):
+    def test_create_item_with_invalid_length(self, client):
         access_token = get_access_token(client)
         long_name = {
             'description': 'g' * 201,
@@ -57,7 +57,7 @@ class TestPost:
         response = post(client, '/categories/1/items', long_name, access_token)
         assert response.status_code == 400
 
-    def test_post_invalid_category_id(self, client):
+    def test_create_item_with_invalid_category_id(self, client):
         access_token = get_access_token(client)
         body = {
             'description': 'Countryside',
@@ -67,8 +67,8 @@ class TestPost:
         assert response.status_code == 404
 
 
-class TestGet:
-    def test_get_valid_id(self, client):
+class TestGetItem:
+    def test_get_item_with_valid_id(self, client):
         response = get(client, '/categories/1/items/1')
         assert response.status_code == 200
         assert response.get_json()['id'] == 1
@@ -78,30 +78,30 @@ class TestGet:
         assert response.get_json()['author']['id'] == 1
         assert response.get_json()['author']['name'] == 'Duong Le'
 
-    def test_get_invalid_id(self, client):
+    def test_get_item_with_invalid_id(self, client):
         response = get(client, '/categories/1/items/10')
         assert response.status_code == 404
 
-    def test_get_list_valid_parameters(self, client):
+    def test_get_list_item_with_valid_parameters(self, client):
         response = get(client, '/categories/1/items?offset=2&limit=2')
         assert response.status_code == 200
         assert response.get_json()['total_items'] == 4
         assert len(response.get_json()['items']) == 2
 
-    def test_get_list_invalid_parameters(self, client):
+    def test_get_list_item_with_invalid_parameters(self, client):
         response = get(client, '/categories/1/items?offset=a')
         assert response.status_code == 400
 
         response = get(client, '/categories/1/items?limit=-1')
         assert response.status_code == 400
 
-    def test_get_list_invalid_category_id(self, client):
+    def test_get_list_item_with_invalid_category_id(self, client):
         response = get(client, '/categories/5/items')
         assert response.status_code == 404
 
 
-class TestPut:
-    def test_put_valid_body(self, client):
+class TestUpdateItem:
+    def test_update_item_with_valid_body(self, client):
         access_token = get_access_token(client)
         body = {
             'description': 'Beach',
@@ -112,7 +112,7 @@ class TestPut:
         assert response.get_json()['description'] == body['description']
         assert response.get_json()['image_url'] == body['image_url']
 
-    def test_put_invalid_id(self, client):
+    def test_update_item_with_invalid_id(self, client):
         access_token = get_access_token(client)
         body = {
             'description': 'Beach',
@@ -121,7 +121,7 @@ class TestPut:
         response = put(client, '/categories/1/items/10', body, access_token)
         assert response.status_code == 404
 
-    def test_put_invalid_author(self, client):
+    def test_update_item_with_invalid_author(self, client):
         access_token = get_access_token(client)
         body = {
             'description': 'Beach',
@@ -131,18 +131,18 @@ class TestPut:
         assert response.status_code == 403
 
 
-class TestDelete:
-    def test_delete_valid_id(self, client):
+class TestDeleteItem:
+    def test_delete_item_with_valid_id(self, client):
         access_token = get_access_token(client)
         response = delete(client, '/categories/1/items/1', access_token)
         assert response.status_code == 200
 
-    def test_delete_invalid_id(self, client):
+    def test_delete_item_with_invalid_id(self, client):
         access_token = get_access_token(client)
         response = delete(client, '/categories/1/items/10', access_token)
         assert response.status_code == 404
 
-    def test_delete_invalid_author(self, client):
+    def test_delete_item_with_invalid_author(self, client):
         access_token = get_access_token(client)
         response = delete(client, '/categories/1/items/3', access_token)
         assert response.status_code == 403

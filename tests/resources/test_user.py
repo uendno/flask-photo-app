@@ -2,8 +2,8 @@ from tests.helpers.request import get, post
 from tests.helpers.token import get_access_token
 
 
-class TestPost:
-    def test_post_valid_body(self, client):
+class TestCreateUser:
+    def test_create_user_with_valid_body(self, client):
         body = {
             'email': 'huong@gmail.com',
             'password': '123456',
@@ -12,7 +12,7 @@ class TestPost:
         response = post(client, '/users', body)
         assert response.status_code == 201
 
-    def test_post_duplicate_email(self, client):
+    def test_create_user_with_duplicate_email(self, client):
         body = {
             'email': 'duong@gmail.com',
             'password': '123456',
@@ -21,7 +21,7 @@ class TestPost:
         response = post(client, '/users', body)
         assert response.status_code == 400
 
-    def test_post_invalid_type(self, client):
+    def test_create_user_with_invalid_type(self, client):
         body = {
             'email': 'duong',
             'password': 123456,
@@ -30,7 +30,7 @@ class TestPost:
         response = post(client, '/users', body)
         assert response.status_code == 400
 
-    def test_post_missing_field(self, client):
+    def test_create_user_with_missing_field(self, client):
         body = {
             'email': 'huong@gmail.com',
             'password': '123456',
@@ -38,7 +38,7 @@ class TestPost:
         response = post(client, '/users', body)
         assert response.status_code == 400
 
-    def test_post_unknown_field(self, client):
+    def test_create_user_with_unknown_field(self, client):
         body = {
             'email': 'huong@gmail.com',
             'password': '123456',
@@ -48,7 +48,7 @@ class TestPost:
         response = post(client, '/users', body)
         assert response.status_code == 400
 
-    def test_post_empty_field(self, client):
+    def test_create_user_with_empty_field(self, client):
         body = {
             'email': 'huong@gmail.com',
             'password': '123456',
@@ -57,7 +57,7 @@ class TestPost:
         response = post(client, '/users', body)
         assert response.status_code == 400
 
-    def test_post_invalid_length(self, client):
+    def test_create_user_with_invalid_length(self, client):
         body = {
             'email': f'huon{"g" * 30}@gmail.com',
             'password': '1',
@@ -67,8 +67,8 @@ class TestPost:
         assert response.status_code == 400
 
 
-class TestGet:
-    def test_get_valid_token(self, client):
+class TestGetUser:
+    def test_get_user_with_valid_token(self, client):
         access_token = get_access_token(client)
         response = get(client, '/users/me', access_token)
         assert response.status_code == 200
