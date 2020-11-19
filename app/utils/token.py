@@ -31,7 +31,6 @@ def token_required(f):
             user = current_user
         except jwt.PyJWTError:
             raise AuthenticationException(INVALID_TOKEN)
-
         return f(user=user, *args, **kwargs)
 
     return decorator
