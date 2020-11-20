@@ -31,14 +31,14 @@ def token_required(f):
             user = current_user
         except jwt.PyJWTError:
             raise AuthenticationException(INVALID_TOKEN)
-
         return f(user=user, *args, **kwargs)
 
     return decorator
 
 
 def encode_token(payload):
-    payload = {**payload, 'iat': datetime.utcnow(), 'exp': datetime.utcnow() + timedelta(days=1)}
+    payload = {**payload, 'iat': datetime.utcnow(),
+               'exp': datetime.utcnow() + timedelta(days=1)}
     return jwt.encode(payload, config.SECRET_KEY, algorithm='HS256').decode('UTF-8')
 
 
