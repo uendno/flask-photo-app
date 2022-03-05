@@ -3,10 +3,7 @@ from tests.helpers.token import get_access_token
 
 def test_request_with_invalid_body(client):
     access_token = get_access_token(client)
-    headers = {
-        'Content-Type': 'application/json',
-        'Authorization': f'Bearer {access_token}'
-    }
+    headers = {'Content-Type': 'application/json', 'Authorization': f'Bearer {access_token}'}
     response = client.post('/categories/1/items', headers=headers, data='{,}')
     assert response.status_code == 400
 

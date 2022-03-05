@@ -38,10 +38,7 @@ class TestCreateCategory:
 
     def test_create_category_with_missing_field(self, client):
         access_token = get_access_token(client)
-        body = {
-            'name': 'Landscape',
-            'description': 'Countryside'
-        }
+        body = {'name': 'Landscape', 'description': 'Countryside'}
         response = post(client, '/categories', body, access_token)
         assert response.status_code == 400
 
@@ -51,7 +48,7 @@ class TestCreateCategory:
             'name': 'Landscape',
             'description': 'Countryside',
             'image_url': 'https://upload.wikimedia.org/wikipedia/commons/3/35/Neckertal_20150527-6384.jpg',
-            'title': 'Beautiful countryside'
+            'title': 'Beautiful countryside',
         }
         response = post(client, '/categories', body, access_token)
         assert response.status_code == 400

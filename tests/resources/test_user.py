@@ -4,29 +4,17 @@ from tests.helpers.token import get_access_token
 
 class TestCreateUser:
     def test_create_user_with_valid_body(self, client):
-        body = {
-            'email': 'huong@gmail.com',
-            'password': '123456',
-            'name': 'Huong'
-        }
+        body = {'email': 'huong@gmail.com', 'password': '123456', 'name': 'Huong'}
         response = post(client, '/users', body)
         assert response.status_code == 201
 
     def test_create_user_with_duplicate_email(self, client):
-        body = {
-            'email': 'duong@gmail.com',
-            'password': '123456',
-            'name': 'Duong'
-        }
+        body = {'email': 'duong@gmail.com', 'password': '123456', 'name': 'Duong'}
         response = post(client, '/users', body)
         assert response.status_code == 400
 
     def test_create_user_with_invalid_type(self, client):
-        body = {
-            'email': 'duong',
-            'password': 123456,
-            'name': 1234567
-        }
+        body = {'email': 'duong', 'password': 123456, 'name': 1234567}
         response = post(client, '/users', body)
         assert response.status_code == 400
 
@@ -39,30 +27,17 @@ class TestCreateUser:
         assert response.status_code == 400
 
     def test_create_user_with_unknown_field(self, client):
-        body = {
-            'email': 'huong@gmail.com',
-            'password': '123456',
-            'name': 'Huong',
-            'user_name': 'huong'
-        }
+        body = {'email': 'huong@gmail.com', 'password': '123456', 'name': 'Huong', 'user_name': 'huong'}
         response = post(client, '/users', body)
         assert response.status_code == 400
 
     def test_create_user_with_empty_field(self, client):
-        body = {
-            'email': 'huong@gmail.com',
-            'password': '123456',
-            'name': ''
-        }
+        body = {'email': 'huong@gmail.com', 'password': '123456', 'name': ''}
         response = post(client, '/users', body)
         assert response.status_code == 400
 
     def test_create_user_with_invalid_length(self, client):
-        body = {
-            'email': f'huon{"g" * 30}@gmail.com',
-            'password': '1',
-            'name': f'Huon{"g" * 30}'
-        }
+        body = {'email': f'huon{"g" * 30}@gmail.com', 'password': '1', 'name': f'Huon{"g" * 30}'}
         response = post(client, '/users', body)
         assert response.status_code == 400
 

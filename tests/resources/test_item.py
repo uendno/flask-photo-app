@@ -34,7 +34,7 @@ class TestCreateItem:
         body = {
             'description': 'Countryside',
             'image_url': 'https://upload.wikimedia.org/wikipedia/commons/3/35/Neckertal_20150527-6384.jpg',
-            'title': 'Beautiful countryside'
+            'title': 'Beautiful countryside',
         }
         response = post(client, '/categories/1/items', body, access_token)
         assert response.status_code == 400

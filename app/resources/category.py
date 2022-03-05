@@ -9,8 +9,7 @@ from app.utils.app_exception import BadRequestException
 from app.utils.token import token_required
 from app.utils.validation import validate_and_load_schema, validate_and_load_category
 
-category_blueprint = Blueprint(
-    'category_blueprint', __name__, url_prefix='/categories')
+category_blueprint = Blueprint('category_blueprint', __name__, url_prefix='/categories')
 
 
 @category_blueprint.route('', methods=['POST'])
@@ -29,10 +28,8 @@ def create_category(data, user):
 @validate_and_load_schema(PaginationSchema)
 def get_categories(data):
     total_categories = CategoryModel.query.count()
-    categories = CategoryModel.query.offset(
-        data['offset']).limit(data['limit']).all()
-    return jsonify(total_items=total_categories,
-                   items=GetCategorySchema(many=True).dump(categories)), 200
+    categories = CategoryModel.query.offset(data['offset']).limit(data['limit']).all()
+    return jsonify(total_items=total_categories, items=GetCategorySchema(many=True).dump(categories)), 200
 
 
 @category_blueprint.route('/<category_id>', methods=['GET'])

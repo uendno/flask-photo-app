@@ -4,8 +4,12 @@ from app.models.item import ItemModel
 from app.schemas.item import CreateItemSchema, UpdateItemSchema, GetItemSchema
 from app.schemas.pagination import PaginationSchema
 from app.utils.token import token_required
-from app.utils.validation import validate_and_load_schema, validate_and_load_category, validate_and_load_item, \
-    validate_ownership
+from app.utils.validation import (
+    validate_and_load_schema,
+    validate_and_load_category,
+    validate_and_load_item,
+    validate_ownership,
+)
 
 item_blueprint = Blueprint('item_blueprint', __name__, url_prefix='/categories/<category_id>/items')
 
@@ -25,11 +29,14 @@ def create_item(category, data, user):
 @validate_and_load_category
 def get_items_by_category_id(category, data):
     total_items = len(category.items)
-    items = ItemModel.query \
-        .filter_by(category_id=category.id) \
-        .offset(data['offset']) \
-        .limit(data['limit']) \
+    items = (
+        ItemModel.query.filter_by(
+            category_id=category.id,
+        )
+        .offset(data['offset'])
+        .limit(data['limit'])
         .all()
+    )
     return jsonify(total_items=total_items, items=GetItemSchema(many=True).dump(items)), 200
 
 

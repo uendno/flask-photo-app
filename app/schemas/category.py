@@ -9,5 +9,7 @@ class CreateCategorySchema(Schema):
 
 class GetCategorySchema(CreateCategorySchema):
     id = fields.Integer()
+
+
 class UpdateCategorySchema(CreateCategorySchema):
     pass
