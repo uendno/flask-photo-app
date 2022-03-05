@@ -25,3 +25,10 @@ $ docker compose up
 ```
 
 3. Navigate to [http://localhost:5000](http://localhost:5000)
+
+## Testing
+
+```
+$ export ENV="test"
+$ pytest
+```
