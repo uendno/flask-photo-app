@@ -1,36 +1,27 @@
-# Quick Start
+# Photo App API
+
+## Documentation
+
+For API design, please vist [https://photos14.docs.apiary.io](https://photos14.docs.apiary.io)
+
+## Prerequisites
+
+- Python 3.7
+- MySQL 5.7
+
+## Quick start guide
 
 1. Clone the repo
 
 ```
-$ git clone
+$ git clone git@github.com:duong-le/flask-photo-app.git
 $ cd flask-photo-app
 ```
 
-2. Initialize and activate a virtualenv:
+2. Start the server:
 
 ```
-$ python3 -m venv env
-$ source env/bin/activate
+$ docker compose up
 ```
 
-3. Install the dependencies:
-
-```
-$ pip3 install -r requirements.txt
-```
-
-4. Start up the database:
-
-```
-$ docker-compose up
-```
-
-5. Run the development server:
-
-```
-$ export ENV=dev
-$ python3 run.py
-```
-
-6. Navigate to [http://localhost:5000](http://localhost:5000)
+3. Navigate to [http://localhost:5000](http://localhost:5000)
