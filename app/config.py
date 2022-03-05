@@ -5,7 +5,7 @@ from app.constants.error_message import INVALID_ENVIRONMENT_VARIABLE
 
 VALID_ENVS = ('dev', 'test', 'prod')
 
-env = os.getenv('ENV')
+env = os.getenv('ENV', 'dev')
 if env not in VALID_ENVS:
     raise RuntimeError(INVALID_ENVIRONMENT_VARIABLE)
 

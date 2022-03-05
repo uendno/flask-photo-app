@@ -3,7 +3,6 @@ version: '3.7'
 services:
   db:
     image: mysql:5.7
-    restart: always
     environment:
       MYSQL_DATABASE: photo_app
       MYSQL_ROOT_PASSWORD: 123456
@@ -11,3 +10,19 @@ services:
       - '3306:3306'
     volumes:
       - ./my-db:/var/lib/mysql
+    networks:
+      - photo-app
+
+  api:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    depends_on:
+      - mysql
+    ports:
+      - '5000:5000'
+    networks:
+      - photo-app
+
+networks:
+  photo-app:
