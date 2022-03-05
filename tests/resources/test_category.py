@@ -1,4 +1,4 @@
-from tests.helpers.request import post, get
+from tests.helpers.request import post, get, put
 from tests.helpers.token import get_access_token
 
 
@@ -99,3 +99,28 @@ class TestGetCategory:
 
         response = get(client, '/categories?limit=-1')
         assert response.status_code == 400
+
+
+class TestUpdateCategory:
+    def test_update_category_with_valid_body(self, client):
+        access_token = get_access_token(client)
+        body = {
+            'name': 'Beach',
+            'description': 'Sunset',
+            'image_url': 'https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/beach-quotes-1559667853.jpg',
+        }
+        response = put(client, '/categories/1', body, access_token)
+        assert response.status_code == 200
+        assert response.get_json()['name'] == body['name']
+        assert response.get_json()['description'] == body['description']
+        assert response.get_json()['image_url'] == body['image_url']
+
+    def test_update_item_with_invalid_id(self, client):
+        access_token = get_access_token(client)
+        body = {
+            'name': 'Beach',
+            'description': 'Sunset',
+            'image_url': 'https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/beach-quotes-1559667853.jpg',
+        }
+        response = put(client, '/categories/10', body, access_token)
+        assert response.status_code == 404
