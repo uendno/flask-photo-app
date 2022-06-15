@@ -2,12 +2,11 @@
 
 ## Documentation
 
-For API design, please vist [https://photos14.docs.apiary.io](https://photos14.docs.apiary.io)
+For API design, please vist [https://flaskphotoapi.docs.apiary.io/#](https://flaskphotoapi.docs.apiary.io/#)
 
 ## Prerequisites
 
-- Python 3.7
-- MySQL 5.7
+- Docker and docker-compose
 
 ## Quick start guide
 
@@ -24,7 +23,7 @@ $ cd flask-photo-app
 $ docker compose up
 ```
 
-3. Navigate to [http://localhost:5000](http://localhost:5000)
+3. Navigate to [http://localhost:5001](http://localhost:5001)
 
 ## Testing
 
