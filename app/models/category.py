@@ -7,8 +7,8 @@ class CategoryModel(BaseModel):
     __tablename__ = 'category'
 
     name: str = db.Column(db.String(30), unique=True)
-    description: str = db.Column(db.String(200))
-    image_url: str = db.Column(db.String(200))
+    description: str = db.Column(db.String(255))
+    image_url: str = db.Column(db.String(255))
     items = db.relationship(ItemModel, backref='category', lazy='joined')
 
     def update(self, name, description, image_url):

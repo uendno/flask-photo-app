@@ -8,6 +8,8 @@ EMAIL_EXIST = 'Email already exists'
 CATEGORY_NAME_EXIST = 'Category name already exists'
 CATEGORY_NOT_FOUND = 'Category not found'
 
+ITEM_NAME_EXIST = 'Item name already exists'
 ITEM_NOT_FOUND = 'Item not found'
+
 
 INVALID_ENVIRONMENT_VARIABLE = 'Value for environment variable ENV is not valid'

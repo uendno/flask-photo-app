@@ -1,8 +1,10 @@
 from flask import Blueprint, jsonify
 
+from app.constants.error_message import ITEM_NAME_EXIST
 from app.models.item import ItemModel
 from app.schemas.item import CreateItemSchema, UpdateItemSchema, GetItemSchema
 from app.schemas.pagination import PaginationSchema
+from app.utils.app_exception import BadRequestException
 from app.utils.token import token_required
 from app.utils.validation import (
     validate_and_load_schema,
@@ -19,6 +21,11 @@ item_blueprint = Blueprint('item_blueprint', __name__, url_prefix='/categories/<
 @validate_and_load_schema(CreateItemSchema)
 @validate_and_load_category
 def create_item(category, data, user):
+    existing_item = ItemModel.query.filter_by(name=data['name']).one_or_none()
+
+    if existing_item:
+        raise BadRequestException(ITEM_NAME_EXIST)
+
     new_item = ItemModel(**data, category_id=category.id, user_id=user.id)
     new_item.save()
     return jsonify(GetItemSchema().dump(new_item)), 201
