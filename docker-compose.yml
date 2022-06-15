@@ -9,20 +9,16 @@ services:
     ports:
       - '3306:3306'
     volumes:
-      - ./my-db:/var/lib/mysql
-    networks:
-      - photo-app
+      - db:/var/lib/mysql
 
   api:
     build:
       context: .
       dockerfile: ./Dockerfile
     depends_on:
-      - mysql
+      - db
     ports:
-      - '5000:5000'
-    networks:
-      - photo-app
+      - '5001:5000'
 
-networks:
-  photo-app:
+volumes:
+  db:
