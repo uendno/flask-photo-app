@@ -42,7 +42,7 @@ def encode_token(payload):
         'iat': datetime.utcnow(),
         'exp': datetime.utcnow() + timedelta(days=1),
     }
-    return jwt.encode(payload, config.SECRET_KEY, algorithm='HS256').decode('UTF-8')
+    return jwt.encode(payload, config.SECRET_KEY, algorithm='HS256')
 
 
 def decode_token(access_token):
