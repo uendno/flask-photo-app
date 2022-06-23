@@ -7,7 +7,7 @@ from app.schemas.category import CreateCategorySchema, GetCategorySchema, Update
 from app.schemas.pagination import PaginationSchema
 from app.utils.app_exception import BadRequestException
 from app.utils.token import token_required
-from app.utils.validation import validate_and_load_schema, validate_and_load_category
+from app.utils.validation import validate_and_load_schema, validate_and_load_category, validate_category_ownership
 
 category_blueprint = Blueprint('category_blueprint', __name__, url_prefix='/categories')
 
@@ -18,6 +18,7 @@ category_blueprint = Blueprint('category_blueprint', __name__, url_prefix='/cate
 def create_category(data, user):
     try:
         new_category = CategoryModel(**data)
+        new_category.user_id = user.id
         new_category.save()
         return jsonify(GetCategorySchema().dump(new_category)), 201
     except IntegrityError:
@@ -42,6 +43,15 @@ def get_category_by_id(category):
 @token_required
 @validate_and_load_schema(UpdateCategorySchema)
 @validate_and_load_category
+@validate_category_ownership
 def update_category_by_id(category, user, data):
     category.update(**data)
     return jsonify(UpdateCategorySchema().dump(category)), 200
+
+@category_blueprint.route('/<category_id>', methods=['DELETE'])
+@token_required
+@validate_and_load_category
+@validate_category_ownership
+def delete_category_by_id(category, user):
+    category.delete()
+    return jsonify({}), 200

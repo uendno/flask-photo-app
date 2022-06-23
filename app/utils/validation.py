@@ -55,3 +55,12 @@ def validate_ownership(f):
         return f(item=item, user=user, *args, **kwargs)
 
     return wrapper
+
+def validate_category_ownership(f):
+    @wraps(f)
+    def wrapper(category, user, *args, **kwargs):
+        if category.user_id != user.id:
+            raise AuthorizationException(UNAUTHORIZED)
+        return f(category=category, user=user, *args, **kwargs)
+
+    return wrapper

@@ -10,6 +10,7 @@ class CategoryModel(BaseModel):
     description: str = db.Column(db.String(255))
     image_url: str = db.Column(db.String(255))
     items = db.relationship(ItemModel, backref='category', lazy='joined')
+    user_id: int = db.Column(db.Integer, db.ForeignKey('user.id'), index=True)
 
     def update(self, name, description, image_url):
         self.name = name

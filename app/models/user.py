@@ -1,6 +1,7 @@
 from werkzeug.security import generate_password_hash
 
 from app.db import db
+from app.models.category import CategoryModel
 from .base import BaseModel
 from .item import ItemModel
 
@@ -12,6 +13,7 @@ class UserModel(BaseModel):
     email: str = db.Column(db.String(30), unique=True)
     hashed_password: str = db.Column(db.String(94))
     items = db.relationship(ItemModel, backref='author', lazy='joined')
+    categories = db.relationship(CategoryModel, backref='author', lazy='joined')
 
     def __init__(self, name, email, password):
         self.name = name
