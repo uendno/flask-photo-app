@@ -12,7 +12,8 @@ class ItemModel(BaseModel):
     user_id: int = db.Column(db.Integer, db.ForeignKey('user.id'), index=True)
     category_id: int = db.Column(db.Integer, db.ForeignKey('category.id'), index=True)
 
-    def update(self, description, image_url):
+    def update(self, name, description, image_url):
+        self.name = name
         self.description = description
         self.image_url = image_url
         db.session.commit()
